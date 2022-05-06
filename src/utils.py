@@ -14,6 +14,8 @@ def checkout_repo_tags(repository_path: str, tag_name: str):
 
 def push_repo_tags(repository_path: str, tag_name: str):
     repo = git.Repo(repository_path)
+    repo.git.add(all=True)
+    repo.git.commit('-m', 'Automatic tags {tag_name}', author='ruhyadi.dr@gmail.com')
     repo.create_tag(tag_name, message=f'Automatic tags {tag_name}')
     repo.remotes.origin.push(tag_name)
     # push to dvc remote registry
