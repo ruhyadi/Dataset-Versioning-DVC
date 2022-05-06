@@ -4,8 +4,7 @@ import pandas as pd
 import os
 import git
 
-from utils import get_repo_tags, checkout_repo_tags
-
+from utils import get_repo_tags, checkout_repo_tags, push_repo_tags
 
 st.title('Dataset Versioning with DVC')
 
@@ -13,11 +12,11 @@ version_dataset = get_repo_tags(os.getcwd())
 
 choice = st.selectbox('Dataset Version', version_dataset)
 
-st.write(choice)
-
 if choice is not None:
     # checkout repository tags
     checkout_repo_tags(os.getcwd(), choice)
+
+    st.success(f'Checkout on: {choice}')
 
 st.header('Upload Dataset')
 
@@ -67,4 +66,6 @@ with dogs_col:
 
 st.header('Save Dataset')
 version = st.text_input('Dataset Version', 'v2.0')
-st.button('Upload Dataset')
+
+if st.button('Upload Dataset') and version is not None:
+    push_repo_tags(os.getcwd(), version)
